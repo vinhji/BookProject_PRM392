@@ -190,7 +190,6 @@ public class ReadBookActivity extends AppCompatActivity implements AdapterView.O
             ((Button) view).setText("Remove Favorite");
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("Set success");
-            alertDialog.setMessage("OK");
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -210,7 +209,6 @@ public class ReadBookActivity extends AppCompatActivity implements AdapterView.O
                 ((Button) view).setText("Set Favorite");
                 AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                 alertDialog.setTitle("Remove success");
-                alertDialog.setMessage("OK");
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {

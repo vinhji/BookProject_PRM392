@@ -45,7 +45,7 @@ public class DetailBookActivity extends AppCompatActivity {
         Book newBook = databaseHelper.getBooksById(intent.getStringExtra("id"));
 
         // Set the title and content TextViews with the book information
-        title.setText("Book id:" + newBook.getId());
-        content.setText("Content:" + newBook.getContent());
+        title.setText(newBook.getName());
+        content.setText(newBook.getContent());
     }
 }
