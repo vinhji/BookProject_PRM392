@@ -112,6 +112,109 @@ public class ManageCategoryActivity extends AppCompatActivity {
         getData();
     }
 
+    // Method to delete the selected category
+    public void deleteCategory(View view) {
+        try {
+            // Check if a category is selected for deletion
+            if (!currentId.equals("")) {
+                // Delete the category from the database
+                db.deleteCategory(Integer.parseInt(currentId));
+
+                // Display a success message using AlertDialog
+                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                alertDialog.setTitle("Delete success");
+                alertDialog.setMessage("Success in deleting category id: " + currentId);
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+
+                // Clear the input fields
+                txtName.setText("");
+                txtDesc.setText("");
+                currentId = "";
+
+                // Update the ListView
+                getData();
+            } else
+                throw new RuntimeException("");
+        } catch (Exception ex) {
+            // Display an error message if an exception occurs
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle("Delete failed");
+            alertDialog.setMessage("ID does not exist");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+        }
+    }
+
+    // Method to update the selected category
+    public void updateCourse(View view) {
+        // Get input values from the EditText fields
+        String s1 = txtName.getText().toString();
+        String s2 = txtDesc.getText().toString();
+
+        // Check if any input field is empty
+        if (s1.trim().equals("") || s2.trim().equals("")) {
+            // Display an error message using AlertDialog
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle("Update failed");
+            alertDialog.setMessage("Please enter full information");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+            return;
+        }
+
+        // Update the category in the database
+        db.updateCategory(Integer.parseInt(currentId), s1, s2);
+
+        // Clear the input fields
+        txtName.setText("");
+        txtDesc.setText("");
+
+        // Display a success message using AlertDialog
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Update success");
+        alertDialog.setMessage("Update in category name: " + s1);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+
+        // Update the ListView
+        getData();
+    }
+
+    // Method to retrieve data and populate the ListView
+    public void getData() {
+        // Get all categories from the database
+        Cursor allCategories = db.getCategories();
+
+        // Create a SimpleCursorAdapter to map data to ListView
+        ListAdapter myAdapter = new SimpleCursorAdapter(this, R.layout.tasks,
+                allCategories,
+                new String[]{DatabaseHelper.COLUMN_CATEGORY_ID, DatabaseHelper.COLUMN_CATEGORY_NAME, DatabaseHelper.COLUMN_CATEGORY_DESCRIPTION},
+                new int[]{R.id.idnum, R.id.c1, R.id.c2}, 0);
+
+        // Set the adapter for the ListView
+        alist.setAdapter(myAdapter);
+    }
 
     // Method to handle item selection in the ListView for testing purposes
     public void test(View view) {
